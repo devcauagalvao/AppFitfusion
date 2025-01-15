@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   Pressable,
+  ScrollView,
 } from "react-native";
 import Constants from "expo-constants";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -22,6 +23,33 @@ interface Treino {
 
 const { width } = Dimensions.get("window");
 const statusBarHeight = Constants.statusBarHeight;
+
+const diasDaSemana = [
+  "Domingo",
+  "domingo",
+  "Segunda-Feira",
+  "Segunda",
+  "segunda-feira",
+  "segunda",
+  "Terça-Feira",
+  "Terça",
+  "terça-feira",
+  "terça",
+  "Quarta-Feira",
+  "Quarta",
+  "quarta-feira",
+  "quarta",
+  "Quinta-Feira",
+  "Quinta",
+  "quinta-feira",
+  "quinta",
+  "Sexta-Feira",
+  "Sexta",
+  "sexta-feira",
+  "sexta",
+  "Sábado",
+  "sábado",
+];
 
 export default function Treino() {
   const [emailUsuario, setEmailUsuario] = useState<string>("");
@@ -52,7 +80,7 @@ export default function Treino() {
         presetsRef,
         where("assignedUser", "array-contains", emailUsuario)
       );
-
+    
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         if (!querySnapshot.empty) {
           const treinosAtualizados: Treino[] = [];
@@ -62,11 +90,24 @@ export default function Treino() {
               treinosAtualizados.push(...(data.workouts as Treino[]));
             }
           });
-
+    
           setTreinos(treinosAtualizados);
-
-          // Seleciona automaticamente o primeiro treino, se houver
-          if (treinosAtualizados.length > 0) {
+    
+          // Corrigindo a seleção automática do treino com base no dia correto
+          const hoje = new Date().getDay(); // Obtém o valor numérico do dia da semana (0-6)
+          const diasDaSemanaNome = [
+            "Domingo", "Segunda-Feira", "Terça-Feira", "Quarta-Feira",
+            "Quinta-Feira", "Sexta-Feira", "Sábado"
+          ];
+    
+          const nomeDiaHoje = diasDaSemanaNome[hoje]; // Mapeia o valor numérico para o nome do dia
+          const treinoDoDia = treinosAtualizados.find(
+            (treino) => treino.name.toLowerCase().includes(nomeDiaHoje.toLowerCase())
+          );
+    
+          if (treinoDoDia) {
+            setSelectedTreino(treinoDoDia);
+          } else if (treinosAtualizados.length > 0) { // Seleciona o primeiro preset automaticamente se nenhum treino do dia for encontrado
             setSelectedTreino(treinosAtualizados[0]);
           }
         } else {
@@ -74,7 +115,7 @@ export default function Treino() {
           setSelectedTreino(null);
         }
       });
-
+    
       return () => unsubscribe();
     }
   }, [isUserLoggedIn, emailUsuario]);
@@ -108,17 +149,24 @@ export default function Treino() {
             </Text>
           ) : treinos ? (
             <View>
-              <View style={styles.buttonContainer}>
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.scrollContainer}
+              >
                 {treinos.map((treino, index) => (
                   <Pressable
                     key={index}
-                    style={styles.selectButton}
+                    style={[
+                      styles.selectButton,
+                      selectedTreino === treino && styles.selectedButton,
+                    ]}
                     onPress={() => handleSelectTreino(treino)}
                   >
                     <Text style={styles.buttonText}>{treino.name}</Text>
                   </Pressable>
                 ))}
-              </View>
+              </ScrollView>
 
               {selectedTreino ? (
                 <View style={styles.treinoCard}>
@@ -179,26 +227,27 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 30,
   },
-  buttonContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    marginBottom: 15,
+  scrollContainer: {
+    gap: 10,
+    marginVertical: 5
   },
   selectButton: {
-    backgroundColor: "#00BB83",
+    backgroundColor: "#101010",
+    borderWidth: 1,
+    borderColor: "#252525",
     paddingVertical: 12,
     paddingHorizontal: 20,
-    margin: 8,
-    borderRadius: 10,
+    borderRadius: 30,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 5,
-    elevation: 5,
+  },
+  selectedButton: {
+    borderColor: "#00bb83",
   },
   buttonText: {
-    color: "#fff",
+    color: "#00bb83",
     textAlign: "center",
     fontSize: 16,
     fontWeight: "600",
@@ -208,8 +257,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#252525",
     padding: 20,
-    borderRadius: 5,
-    marginVertical: 10,
+    borderRadius: 20,
+    marginVertical: 20,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.3,

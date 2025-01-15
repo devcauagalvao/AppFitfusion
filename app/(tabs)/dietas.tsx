@@ -137,8 +137,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#101010",
     borderWidth: 1,
     borderColor: "#252525",
-    borderRadius: 5,
-    padding: 15,
+    borderRadius: 20,
+    padding: 20,
     marginBottom: 13,
   },
   cardSubtitle: {

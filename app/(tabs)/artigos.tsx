@@ -323,7 +323,7 @@ const styles = StyleSheet.create({
     height: 47,
     width: "100%",
     fontWeight: "bold",
-    color: "#00FFb3",
+    color: "#fff",
     fontSize: 16,
     paddingHorizontal: 10,
     borderWidth: 1,
@@ -343,8 +343,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#101010",
     borderWidth: 1,
     borderColor: "#252525",
-    borderRadius: 5,
-    padding: 15,
+    borderRadius: 20,
+    padding: 20,
   },
   itemHeader: {
     flexDirection: "row",
@@ -391,10 +391,11 @@ const styles = StyleSheet.create({
     top: 7,
     backgroundColor: "#00BB83",
     padding: 10,
+    borderRadius: 30,
   },
   closeButton: {
     backgroundColor: "#1E1E1E",
-    borderRadius: 5,
+    borderRadius: 30,
     paddingVertical: 10,
   },
   closeButtonText: {

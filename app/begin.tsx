@@ -14,7 +14,7 @@ import useCustomFonts from "../assets/fonts/fonts";
 const { width } = Dimensions.get("window");
 
 export default function Begin() {
-  /* fonte */
+
   const fontsLoaded = useCustomFonts();
 
   /* rota */

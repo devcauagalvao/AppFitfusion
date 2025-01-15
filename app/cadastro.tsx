@@ -17,7 +17,6 @@ import {
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "./firebaseconfig";
-import Icon from "react-native-vector-icons/Feather";
 
 const [showPassword, setShowPassword] = useState(false);
 
@@ -66,7 +65,6 @@ export default function Cadastro() {
   return (
     <View style={styles.imgContainer}>
       <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
-        <Icon name="arrow-left" size={40} color="#fff" />
       </TouchableOpacity>
         <KeyboardAvoidingView style={styles.background}>
           <View style={styles.configContainer}>
@@ -110,7 +108,6 @@ export default function Cadastro() {
                 onPress={() => setShowPassword(!showPassword)}
                 style={styles.eyeIcon}
               >
-                <Icon name={showPassword ? "eye" : "eye-off"} size={24} color="#888" />
               </TouchableOpacity>
 
               <TouchableOpacity style={styles.btnSubmit} onPress={handleSignUp}>
