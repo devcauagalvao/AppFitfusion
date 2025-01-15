@@ -675,7 +675,7 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   cancelButton: {
-    backgroundColor: "#FF6347", // Cor do botão de cancelar (vermelho)
+    backgroundColor: "#ff0000", // Cor do botão de cancelar (vermelho)
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
